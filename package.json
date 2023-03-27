@@ -1,6 +1,6 @@
 {
   "name": "electron-note-app",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "This app allows toggle dark mode and create notes",
   "main": "main.js",
   "scripts": {

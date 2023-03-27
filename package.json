@@ -1,7 +1,7 @@
 {
   "name": "electron-note-app",
-  "version": "1.0.2",
-  "description": "",
+  "version": "1.0.4",
+  "description": "This app allows toggle dark mode and create notes",
   "main": "main.js",
   "scripts": {
     "start": "electron-forge start",
@@ -13,7 +13,7 @@
     "type": "git",
     "url": "git@github.com-umar:umar482/electron-note-app.git"
   },
-  "author": "",
+  "author": "Softaims",
   "license": "ISC",
   "devDependencies": {
     "@electron-forge/cli": "^6.0.5",

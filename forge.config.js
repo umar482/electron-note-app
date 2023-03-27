@@ -8,7 +8,7 @@ module.exports = {
     },
     {
       name: '@electron-forge/maker-zip',
-      platforms: ['darwin'],
+      platforms: ['darwin', 'linux'],
     },
     {
       name: '@electron-forge/maker-deb',
@@ -29,7 +29,7 @@ module.exports = {
         },
         authToken: "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",
         prerelease: false,
-        draft: true,
+        draft: false,
       },
     },
   ],

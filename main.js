@@ -2,7 +2,10 @@ const  { app, BrowserWindow, ipcMain, nativeTheme } = require("electron")
 const path = require("path")
 const fs = require("fs")
 
+require('update-electron-app')()
+
 process.env.NODE_ENV = "production";
+process.env.GITHUB_TOKEN = "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";
 
 const isMac = process.platform === 'darwin';
 const isDev = process.env.NODE_ENV !== 'production';

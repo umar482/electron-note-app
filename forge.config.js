@@ -19,4 +19,18 @@ module.exports = {
       config: {},
     },
   ],
+  publishers: [
+    {
+      name: '@electron-forge/publisher-github',
+      config: {
+        repository: {
+          owner: 'umar482',
+          name: 'electron-note-app',
+        },
+        authToken: "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",
+        prerelease: false,
+        draft: true,
+      },
+    },
+  ],
 };

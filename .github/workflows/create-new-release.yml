@@ -1,0 +1,60 @@
+name: Release Apps on Push
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  release-apps:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14.x'
+      - name: Install dependencies
+        run: npm install
+      - name: Build Windows app
+        run: npx electron-forge make --platform=win32
+      - name: Build macOS app
+        run: npx electron-forge make --platform=darwin
+      - name: Build Linux app
+        run: npx electron-forge make --platform=linux
+      - name: Create release
+        id: create_release
+        uses: actions/create-release@v1.0.0
+        with:
+          tag_name: v1.0.8 # Replace with your tag name
+          release_name: Release v1.0.8 # Replace with your release name
+          body: |
+            This is a new release with multiple desktop apps for Windows, macOS, and Linux.
+          draft: false
+          prerelease: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload Windows app
+        uses: actions/upload-release-asset@v1.0.1
+        with:
+          asset_path: out/make/squirrel.windows/x64/app-setup.exe # Replace with your Windows app artifact path
+          asset_name: app-win.exe
+          asset_content_type: application/octet-stream
+          release_id: ${{ steps.create_release.outputs.id }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload macOS app
+        uses: actions/upload-release-asset@v1.0.1
+        with:
+          asset_path: out/make/darwin/x64/app-mac.zip # Replace with your macOS app artifact path
+          asset_name: app-mac.zip
+          asset_content_type: application/octet-stream
+          release_id: ${{ steps.create_release.outputs.id }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload Linux app
+        uses: actions/upload-release-asset@v1.0.1
+        with:
+          asset_path: out/make/deb/x64/app-linux.deb # Replace with your Linux app artifact path
+          asset_name: app-linux.deb
+          asset_content_type: application/octet-stream
+          release_id: ${{ steps.create_release.outputs.id }}
+          token: ${{ secrets.GITHUB_TOKEN }}

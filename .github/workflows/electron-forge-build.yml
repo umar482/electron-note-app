@@ -12,7 +12,8 @@ jobs:
     strategy:
       matrix:
         os: [macos-latest, ubuntu-latest, windows-latest]
-        node-version: [14.x]
+        platform: [darwin, linux, win32]
+        node-version: [16.x]
 
     steps:
       - name: Checkout code
@@ -58,3 +59,27 @@ jobs:
         with:
           name: ${{ matrix.platform }}-app
           path: out/make
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.ELECTRON_NOTE_GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ github.run_number }}
+          release_name: Release ${{ github.run_number }}
+          body: |
+            This is an automatically generated release for build ${{ github.run_number }}.
+          draft: false
+          prerelease: false
+
+      - name: Upload Release Assets
+        id: upload-release-assets
+        uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.ELECTRON_NOTE_GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ${{ steps.upload-artifact.outputs.artifact_path }}
+          asset_name: ${{ matrix.platform }}-app
+          asset_content_type: application/octet-stream

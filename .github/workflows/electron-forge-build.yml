@@ -39,26 +39,11 @@ jobs:
           name: ${{ matrix.platform }}-app
           path: out/make
           
-      - name: Set up Node.js environment
-        uses: actions/setup-node@v2
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'npm'
+  create_release:
 
-      - name: Install dependencies
-        run: npm install
+    runs-on: ubuntu-latest
 
-      - name: Build app
-        run: npm run make
-
-      - name: Package app
-        run: npm run package -- --platform=${{ matrix.platform }}
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: ${{ matrix.platform }}-app
-          path: out/make
+    steps:
 
       - name: Create Release
         id: create_release
@@ -66,8 +51,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.ELECTRON_NOTE_GITHUB_TOKEN }}
         with:
-          tag_name: v${{ github.run_number }}
-          release_name: Release ${{ github.run_number }}
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
           body: |
             This is an automatically generated release for build ${{ github.run_number }}.
           draft: false
